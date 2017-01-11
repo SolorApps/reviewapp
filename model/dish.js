@@ -6,8 +6,8 @@ const Schema = mongoose.Schema;
 const DishSchema = new Schema({
     name: {type:String, set:toLower},
     content: { type: String, get: obfuscate},
+    latest_image_uploaded: String,
     rating: { type: Number, default: 0},
-    user: { type: Schema.Types.ObjectId, ref: 'user' },
     reviews: [{ type:Schema.Types.ObjectId,ref:'review' }]
 });
 
