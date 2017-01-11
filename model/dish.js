@@ -4,24 +4,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const DishSchema = new Schema({
-    name: {type:String, set:toLower},
-    content: { type: String, get: obfuscate},
+    name: String,
+    content: String,
     latest_image_uploaded: String,
     rating: { type: Number, default: 0},
     reviews: [{ type:Schema.Types.ObjectId,ref:'review' }]
 });
 
-// DishSchema.plugin(textSearch);
-DishSchema.index({name:'text', content:'text'});
+// const Dish = mongoose.model('dish', DishSchema);
 
-function obfuscate (cc) {
-    // console.log(cc);
-  return '****-****-****-' + cc.slice(cc.length-4, cc.length);
-}
-function toLower (v) {
-  return v.toLowerCase();
-}
-
-const Dish = mongoose.model('dish', DishSchema);
-
-module.exports = Dish;
+module.exports = DishSchema;

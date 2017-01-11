@@ -9,11 +9,11 @@ const RestaurantSchema = new Schema({
     dishes: [DishSchema]
 });
 
-RestaurantSchema.virtual('average').get(function() {
-    if(this.dishes.length > 0){
-        return this.sum_of_ratings / this.dishes.length;
-    }
-});
+// RestaurantSchema.virtual('average').get(function() {
+//     if(this.dishes.length > 0){
+//         return this.sum_of_ratings / this.dishes.length;
+//     }
+// });
 
 const Restaurant = mongoose.model('restaurant', RestaurantSchema);
 module.exports = Restaurant;

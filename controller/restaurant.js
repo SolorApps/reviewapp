@@ -7,7 +7,7 @@ exports.postRestaurant = function(req, res) {
 
     // Set the restaurant properties that came from the POST data
     var restaurantProp = {
-        name:'el restaurant'
+        name: req.body.name
     };
     CreateRestaurant(restaurantProp)
     .then((restaurant)=>{
@@ -19,12 +19,17 @@ exports.postRestaurant = function(req, res) {
 };
 
 exports.getRestaurants = function(req, res) {
+    FindRestaurants()
+    .then((restaurants)=>{ 
+        res.json(restaurants);
+    })
+};
 
-
-  Beer.find(function(err, beers) {
-    if (err)
-      res.send(err);
-
-    res.json(beers);
-  });
+exports.createDefault = function(req, res) {
+    CreateRestaurant({
+      name: 'el restaurante'
+    })
+    .then((restaurants)=>{ 
+        res.json(restaurants);
+    })
 };
