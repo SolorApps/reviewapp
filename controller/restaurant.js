@@ -1,5 +1,7 @@
 const CreateRestaurant = require('../queries/CreateRestaurant');
 const FindRestaurants = require('../queries/FindRestaurants');
+const AddDishToRestaurant = require('../queries/AddDishToRestaurant');
+
 
 // Create endpoint /api/restaurant for POSTS
 exports.postRestaurant = function(req, res) {
@@ -32,4 +34,22 @@ exports.createDefault = function(req, res) {
     .then((restaurants)=>{ 
         res.json(restaurants);
     })
+};
+
+exports.addDishToRestaurant = function(req, res, next) {
+    // var dishProps = {
+    //     name: "a new dish",
+    //     rating: 0
+    // };
+    AddDishToRestaurant(req.query.id, req.query.name, req.query.rating)
+    // res.send(req.query.id);
+    // AddDishToRestaurant(req.query.id, dishProps)
+    .then((restaurants)=>{ 
+        res.json(restaurants);
+    })
+    .catch((err)=>{
+        console.log('this is the error');
+        // console.log(err);
+        return next();
+    });
 };

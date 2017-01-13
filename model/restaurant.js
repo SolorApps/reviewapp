@@ -8,7 +8,6 @@ const RestaurantSchema = new Schema({
     sum_of_ratings: { type: Number, default: 0},
     dishes: [DishSchema]
 });
-
 // RestaurantSchema.virtual('average').get(function() {
 //     if(this.dishes.length > 0){
 //         return this.sum_of_ratings / this.dishes.length;

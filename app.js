@@ -1,7 +1,10 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var passport = require('passport');
 var restaurantController = require('./controller/restaurant');
+var userController = require('./controller/user');
+var authController = require('./controllers/auth');
 var app = express();
 // Use the body-parser package in our application
 app.use(bodyParser.urlencoded({
@@ -24,6 +27,14 @@ var router = express.Router();
 router.route('/default')
     .get(restaurantController.createDefault);
 
+router.route('/add')
+    .get(restaurantController.addDishToRestaurant);
+
+router.route('/getRestaurants')
+    .get(restaurantController.getRestaurants);
+router.route('/register')
+    .get(userController.postUsers);
+
 app.use('/api', router);
 
 app.get('/', function(req, res, next){
@@ -31,6 +42,7 @@ app.get('/', function(req, res, next){
 });
 
 app.use(function(req, res, next) {
+  console.log('we are handling error');
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
@@ -39,6 +51,9 @@ app.use(function(req, res, next) {
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
+  console.log('this is error handler');
+  console.log(err.message);
+  console.log('end of message');
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
