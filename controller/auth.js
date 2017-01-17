@@ -33,7 +33,7 @@ passport.use(new BasicStrategy(
   }
 ));
 
-exports.isAuthenticated = passport.authenticate('basic', { session : true });
+exports.isAuthenticated = passport.authenticate('basic', { session : false });
 
 exports.userExist = function(req, res, next) {
     User.count({

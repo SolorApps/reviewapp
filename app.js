@@ -4,12 +4,16 @@ var bodyParser = require('body-parser');
 var passport = require('passport');
 var restaurantController = require('./controller/restaurant');
 var userController = require('./controller/user');
-var authController = require('./controllers/auth');
+var authController = require('./controller/auth');
 var app = express();
 // Use the body-parser package in our application
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
+app.use(passport.initialize());
+
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://localhost/reviewapp');
@@ -31,14 +35,26 @@ router.route('/add')
     .get(restaurantController.addDishToRestaurant);
 
 router.route('/getRestaurants')
-    .get(restaurantController.getRestaurants);
+    .get(authController.isAuthenticated,restaurantController.getRestaurants);
+
 router.route('/register')
-    .get(userController.postUsers);
+    .post(userController.postUsers);
+
+router.route('/login')
+    .get(authController.isAuthenticated,function(req,res){
+
+    });
 
 app.use('/api', router);
 
 app.get('/', function(req, res, next){
     res.send('my web server');
+});
+
+app.get('*', function(req, res, next) {
+        var err = new Error('oops! something broke');
+        err.status = 404;
+        next(err);
 });
 
 app.use(function(req, res, next) {

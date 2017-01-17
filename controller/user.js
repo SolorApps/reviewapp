@@ -1,8 +1,10 @@
 // Load required packages
 var User = require('../model/user');
+var bodyParser = require('body-parser');
 
 // Create endpoint /api/users for POST
 exports.postUsers = function(req, res) {
+  // console.log("this is a post message");
   var user = new User({
     username: req.body.username,
     password: req.body.password
@@ -27,5 +29,5 @@ exports.getUsers = function(req, res) {
 };
 
 exports.registerUser = function(req, res){
-
+  console.log('this is a post message');
 };
