@@ -1,6 +1,7 @@
 // Load required packages
 var passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;
+var JwtStrategy = require("passport-jwt").Strategy;
 var User = require('../model/user');
 
 passport.serializeUser(function(user, done) {
@@ -33,7 +34,22 @@ passport.use(new BasicStrategy(
   }
 ));
 
-exports.isAuthenticated = passport.authenticate('basic', { session : false });
+exports.isAuthenticatedBasic = passport.authenticate('basic', { session : false });
+
+passport.use(new JwtStrategy(jwtOptions, function(jwt_payload, next) {
+    console.log('payload received', jwt_payload);
+    // usually this would be a database call:
+    var user = users[_.findIndex(users, {id: jwt_payload.id})];
+    if (user) {
+      next(null, user);
+    } else {
+      next(null, false);
+    }
+  }
+));
+
+exports.isAuthenticatedJwt = passport.authenticate('jwt', { session: false });
+
 
 exports.userExist = function(req, res, next) {
     User.count({
