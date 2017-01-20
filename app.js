@@ -35,15 +35,13 @@ router.route('/add')
     .get(restaurantController.addDishToRestaurant);
 
 router.route('/getRestaurants')
-    .get(authController.isAuthenticated,restaurantController.getRestaurants);
+    .get(authController.isAuthenticatedJwt,restaurantController.getRestaurants);
 
 router.route('/register')
-    .post(userController.postUsers);
+    .post(userController.registerUser);
 
 router.route('/login')
-    .get(authController.isAuthenticated,function(req,res){
-
-    });
+    .post(userController.loginUser);
 
 app.use('/api', router);
 
