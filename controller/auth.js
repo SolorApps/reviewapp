@@ -41,11 +41,14 @@ passport.use(new BasicStrategy(
     findUserByUsername(username)
     .then((user)=>{
       // No user found with that username
-      if (!user) { return callback(null, false); }
+      console.log('user is found');
+      if (!user) { 
+        console.log('no user with that name is here');
+        return callback(null, false); 
+      }
 
       // Make sure the password is correct
       user.verifyPassword(password, function(err, isMatch) {
-        console.log('vsdfadaf');
         if (err) { return callback(err); }
 
         // Password did not match
