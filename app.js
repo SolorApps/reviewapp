@@ -2,9 +2,11 @@ var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
 var passport = require('passport');
-var restaurantController = require('./controller/restaurant');
-var userController = require('./controller/user');
-var authController = require('./controller/auth');
+var users = require('./routes/users');
+var restaurant = require('./routes/restaurant');
+// var restaurantController = require('./controller/restaurant');
+// var userController = require('./controller/user');
+// var authController = require('./controller/auth');
 var app = express();
 // Use the body-parser package in our application
 app.use(bodyParser.json());
@@ -28,32 +30,33 @@ mongoose.connect('mongodb://localhost/reviewapp');
 
 // Create our Express router
 var router = express.Router();
-router.route('/default')
-    .get(restaurantController.createDefault);
+// router.route('/default')
+//     .get(restaurantController.createDefault);
 
-router.route('/add')
-    .get(restaurantController.addDishToRestaurant);
+// router.route('/add')
+//     .get(restaurantController.addDishToRestaurant);
 
-router.route('/getRestaurants')
-    .get(authController.isAuthenticatedJwt,restaurantController.getRestaurants);
+// router.route('/getRestaurants')
+//     .get(authController.isAuthenticatedJwt,restaurantController.getRestaurants);
 
-router.route('/register')
-    .post(userController.registerUser);
+// router.route('/register')
+//     .post(userController.registerUser);
 
-router.route('/login')
-    .post(userController.loginUser);
+// router.route('/login')
+//     .post(userController.loginUser);
 
-app.use('/api', router);
+app.use('/api', users);
+app.use('/api/', restaurant);
 
 app.get('/', function(req, res, next){
     res.send('my web server');
 });
 
-app.get('*', function(req, res, next) {
-        var err = new Error('oops! something broke');
-        err.status = 404;
-        next(err);
-});
+// app.get('*', function(req, res, next) {
+//         var err = new Error('oops! something broke');
+//         err.status = 404;
+//         next(err);
+// });
 
 app.use(function(req, res, next) {
   console.log('we are handling error');

@@ -26,10 +26,12 @@ exports.registerUser = function(req, res, next){
     if(!user){
       newUser.save()
       .then((user)=>{
-        var token = jwt.sign({id: user.id}, secret, {
-            expiresIn: 60*5 // 60 seconds * 5
-        });
-        res.json({ message: 'Success', token: token});
+        console.log(user);
+        // var token = jwt.sign({id: user.id}, secret, {
+        //     expiresIn: 60*5 // 60 seconds * 5
+        // });
+        // res.json({ message: 'Success', token: token});
+        generateJwt(60*5,user, res);
       })
     }
     else{
@@ -37,6 +39,7 @@ exports.registerUser = function(req, res, next){
     }
   })
   .catch((err)=>{
+    console.log('&&&&&');
     return next(err);
   })
   // newUser.save()
@@ -63,14 +66,14 @@ exports.loginUser = function(req, res, next){
       //     expiresIn: 60*5
       // });
       // return res.json({ message: 'Success', token: token});
-      return generateJwt(60*5,user);
+      generateJwt(60*5,user, res);
     }
   })(req, res, next);
+};
 
-  var generateJwt = function (secondsToExperiration,user){
+var generateJwt = function (secondsToExperiration,user, res){
     var token = jwt.sign({id: user.id}, secret, {
           expiresIn: secondsToExperiration
       });
-      return res.json({ message: 'Success', token: token});
-  }
+      res.json({ success: true, token: token});
 };
